@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Flask App</title>
+    <!--><link rel="stylesheet" href="../static/style/home.css"/><!-->
+    <link href="../static/style/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+</head>
+<body class="bg-light">
+
+    <!-- navbar -->
+    <nav class="navbar bg-body-tertiary align-items-center mx-5 shadow-lg" data-bs-theme="dark">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1 mx-auto fs-1 fw-bold p-2">Controlla la tua ventola!</span>
+        </div>
+    </nav>
+          
+  <!---->
+    <div class="text-center position-absolute top-50 start-50 translate-middle p-5 rounded-3 bg-light shadow-lg">  
+      <div id="btn_container">
+          <!----><button type="button" class="btn btn-lg btn-success fs-1 fw-bold shadow-lg p-3 rounded-4" onclick="func()">Premi per accendere</button>
+        </div>
+    </div>
+
+    <script src="../static/style/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+        function setup(){
+        fetch('/Setup')
+        .then(response => response.json())
+        .then(data => {
+            let btn_stato_setup = data.stato;
+                if (btn_stato_setup==1) {
+                    document.getElementById('btn_container').innerHTML = '<button type="button"class="btn btn-lg btn-danger fs-1 fw-bold shadow-lg p-3 rounded-4" onclick="func()">Premi per spegnere</button>';           
+                }else{
+                    document.getElementById('btn_container').innerHTML = '<button type="button" class="btn btn-lg btn-success fs-1 fw-bold shadow-lg p-3 rounded-4" onclick="func()">Premi per accendere</button>';
+                }
+            })
+
+        }
+        function func(){
+            setInterval(setup, 100); 
+            //Console.log({stato})
+            fetch('/Accendi')
+            .then(response => response.json())
+            .then(data => {
+                let btn_stato = data.stato;
+                if (btn_stato==1) {
+                    document.getElementById('btn_container').innerHTML = '<button type="button"class="btn btn-lg btn-danger fs-1 fw-bold shadow-lg p-3 rounded-4" onclick="func()">Premi per spegnere</button>';           
+                }else{
+                    document.getElementById('btn_container').innerHTML = '<button type="button" class="btn btn-lg btn-success fs-1 fw-bold shadow-lg p-3 rounded-4" onclick="func()">Premi per accendere</button>';
+                }
+            })
+        }
+        //setInterval(updatePage, 1000);    
+    </script>
+</body>
+</html>
